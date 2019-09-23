@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <property name="javaFileEncoding" value="UTF-8" />
+        <!--配置是否使用通用 Mapper 自带的注释扩展，默认 true -->
+        <!--<property name="useMapperCommentGenerator" value="false"/> -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+        <!--通用 Mapper 插件，可以生成带注解的实体类 -->
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <!-- 通用mapper配置，也可以自自己写 -->
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper,tk.mybatis.mapper.hsqldb.HsqldbMapper" />
+            <!-- caseSensitive 是否区分大小写，默认值 false。如果数据库区分大小写，这里就需要配置为 true，这样当表名为 USER
+                时，会生成 @Table(name = "USER") 注解，否则使用小写 user 时会找不到表。 -->
+            <property name="caseSensitive" value="true" />
+            <!-- beginningDelimiter 和 endingDelimiter 开始和结束分隔符，对于有关键字的情况下适用。 -->
+            <!-- <property name="beginningDelimiter" value="`" /> <property name="endingDelimiter"
+                value="`" /> -->
+            <!-- forceAnnotation 是否强制生成注解，默认 false，如果设置为 true，不管数据库名和字段名是否一致，都会生成注解（包含
+                @Table 和 @Column）。 -->
+            <property name="forceAnnotation" value="true" />
+            <!-- useMapperCommentGenerator 是否使用通用 Mapper 提供的注释工具，默认 true 使用，这样在生成代码时会包含字段的注释（目前只有
+                mysql 和 oracle 支持），设置 false 后会用默认的，或者你可以配置自己的注释插件。 -->
+            <property name="useMapperCommentGenerator" value="true" />
+        </plugin>
+
+        <!--通用代码生成器插件-->
+        <!-- Dao层-->
+        <plugin type="tk.mybatis.mapper.generator.TemplateFilePlugin">
+            <!--targetProject 生成代码的位置-->
+            <property name="targetProject" value="net-blog-dao/src/main/java"/>
+            <!--targetPackage 生成代码的包名-->
+            <property name="targetPackage" value="com.blog.dao"/>
+            <!--模板路径-->
+            <property name="templatePath" value="generator/mapper.ftl"/>
+            <!--生成DAO类名后缀-->
+            <property name="mapperSuffix" value="Dao"/>
+            <!--生成DAO类的全称类名 -->
+            <property name="fileName" value="${tableClass.shortClassName}${mapperSuffix}.java"/>
+        </plugin>
+
+        <!--mapper.xml 生成-->
+        <plugin type="tk.mybatis.mapper.generator.TemplateFilePlugin">
+            <property name="targetProject" value="net-blog-dao/src/main/resources"/>
+            <property name="targetPackage" value="com.blog.dao"/>
+            <property name="mapperPackage" value="com.blog.dao"/>
+            <property name="templatePath" value="generator/mapperXml.ftl"/>
+            <property name="mapperSuffix" value="Dao"/>
+            <property name="fileName" value="${tableClass.shortClassName}${mapperSuffix}.xml"/>
+        </plugin>
+
+        <!--&lt;!&ndash;service接口 生成&ndash;&gt;
+        <plugin type="tk.mybatis.mapper.generator.TemplateFilePlugin">
+            <property name="targetProject" value="net-blog-service/src/main/java"/>
+            <property name="targetPackage" value="com.blog.service"/>
+            <property name="templatePath" value="generator/service.ftl"/>
+            <property name="mapperSuffix" value="Service"/>
+            <property name="fileName" value="${tableClass.shortClassName}${mapperSuffix}.java"/>
+        </plugin>
+
+        &lt;!&ndash;service实现 生成&ndash;&gt;
+        <plugin type="tk.mybatis.mapper.generator.TemplateFilePlugin">
+            <property name="targetProject" value="net-blog-service-impl/src/main/java"/>
+            <property name="targetPackage" value="com.blog.service.ipml"/>
+            <property name="templatePath" value="generator/serviceImpl.ftl"/>
+            <property name="mapperSuffix" value="ServiceImpl"/>
+            <property name="fileName" value="${tableClass.shortClassName}${mapperSuffix}.java"/>
+        </plugin>
+
+        &lt;!&ndash;controller实现 生成&ndash;&gt;
+        <plugin type="tk.mybatis.mapper.generator.TemplateFilePlugin">
+            <property name="targetProject" value="net-blog-service-web/src/main/java"/>
+            <property name="targetPackage" value="com.blog.controller"/>
+            <property name="templatePath" value="generator/controller.ftl"/>
+            <property name="mapperSuffix" value="Controller"/>
+            <property name="fileName" value="${tableClass.shortClassName}${mapperSuffix}.java"/>
+        </plugin>-->
+
+        <!-- 数据库配置 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/net-blog"
+                        userId="root"
+                        password="123456">
+        </jdbcConnection>
+
+        <!-- 实体类 生成 -->
+        <javaModelGenerator targetPackage="com.blog.bean" targetProject="net-blog-bean/src/main/java"/>
+
+        <!-- 表名 -->
+        <table tableName="blog">
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
+    </context>
+</generatorConfiguration>
